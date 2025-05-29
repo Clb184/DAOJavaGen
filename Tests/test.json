@@ -1,0 +1,16 @@
+{
+  "package_name" :  "Tests",
+  "name": "Test",
+  "table_name": "test",
+  "imports" : ["java.util.Date"],
+  "members": [
+    {
+      "type": "int",
+      "name": "ExampleInt"
+    },
+    {
+      "type": "float",
+      "name": "ExampleFloat"
+    }
+  ]
+} 

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.6)
 project(DAOJavaGen)
 set(CMAKE_CXX_STANDARD 20)
-file(DOWNLOAD https://github.com/nlohmann/json/releases/download/v3.12.0/json.hpp ${CMAKE_HOME_DIRECTORY}/include/json.hpp SHOW_PROGRESS)
-file(DOWNLOAD https://raw.githubusercontent.com/tronkko/dirent/master/include/dirent.h ${CMAKE_HOME_DIRECTORY}/include/dirent.h SHOW_PROGRESS)
+file(DOWNLOAD https://github.com/nlohmann/json/releases/download/v3.12.0/json.hpp ${CMAKE_HOME_DIRECTORY}/include/json.hpp)
+file(DOWNLOAD https://raw.githubusercontent.com/tronkko/dirent/master/include/dirent.h ${CMAKE_HOME_DIRECTORY}/include/dirent.h)
 
 # Hot Reload for MSVC
 if (POLICY CMP0141)

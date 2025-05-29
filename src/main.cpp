@@ -1,5 +1,6 @@
 #include "PathUtyl.hpp"
-#include "json.hpp"
+#include "SourceCreator.hpp"
+#include <fstream>
 
 /*
 structure is the following:
@@ -21,7 +22,7 @@ int main(int argc, char** argv) {
 
 	// Print usage if no parameters passed
 	if (argc < 2) {
-		printf("Usage: daojavagen <json>");
+		printf("Usage: daojavagen <json>...");
 		return -1;
 	}
 
@@ -30,4 +31,34 @@ int main(int argc, char** argv) {
 	CheckCreateExistsDir("models/dao/");
 	CheckCreateExistsDir("models/entities/");
 	CheckCreateExistsDir("services/");
+
+	// The necessary stuff to load the JSON file
+	std::ifstream file;
+
+	for (int i = 1; i < argc; i++) {
+		file.open(argv[i]);
+		if (file.is_open()) {
+			try {
+				// JSON and decriptor that is going to be filled
+				nlohmann::json json;
+				entity_descriptor_t descriptor;
+
+				json = nlohmann::json::parse(file);
+				InitializeEntityDescriptor(&json, &descriptor);
+
+				// Create the source files
+				CreateEntitySource(descriptor);
+				CreateControllerSource(descriptor);
+				CreateDAOSource(descriptor);
+				CreateInterfaceSource(descriptor);
+				CreateImplementationSource(descriptor);
+			}
+			catch (std::exception e) {
+				printf("Error while processing %s: %s \n", argv[i], e.what());
+			}
+			file.close();
+		}
+	}
+
+	return 0;
 }
