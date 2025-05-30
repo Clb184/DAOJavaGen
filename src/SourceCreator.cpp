@@ -25,6 +25,13 @@ void CreateEntitySource(const entity_descriptor_t& descriptor) {
 			fprintf(file, "\tprivate %s m_%s;\n", m.member_type.c_str(), m.member_name.c_str());
 		}
 		fprintf(file, "\n");
+		fprintf(file, "\t// Getter and Setter for ID\n");
+		fprintf(file, "\tpublic void SetID(Long id) {\n");
+		fprintf(file, "\t\tthis.m_ID = id;\n");
+		fprintf(file, "\t}\n\n");
+		fprintf(file, "\tpublic Long GetID() {\n");
+		fprintf(file, "\t\treturn this.m_ID;\n");
+		fprintf(file, "\t}\n\n");
 		for (auto& m : descriptor.members) {
 			fprintf(file, "\tpublic void Set%s(%s %s) {\n", m.member_name.c_str(), m.member_type.c_str(), m.member_name.c_str());
 			fprintf(file, "\t\tthis.m_%s = %s;\n", m.member_name.c_str(), m.member_name.c_str());
@@ -56,7 +63,7 @@ void CreateControllerSource(const entity_descriptor_t& descriptor) {
 		fprintf(file, "import %s.models.entities.C%s;\n", descriptor.package_name.data(), descriptor.name.data());
 		fprintf(file, "import %s.services.I%sService;\n\n", descriptor.package_name.data(), descriptor.name.data());
 		fprintf(file, "@RestController\n");
-		fprintf(file, "@RequestMapping(\"api\")\n");
+		fprintf(file, "@RequestMapping(\"/api\")\n");
 		fprintf(file, "public class %s {\n", class_name);
 		fprintf(file, "\t@Autowired\n");
 		fprintf(file, "\tprivate I%sService m_Service;\n", descriptor.name.data());
@@ -137,12 +144,15 @@ void CreateImplementationSource(const entity_descriptor_t& descriptor) {
 		fprintf(file, "\t\tm_%sDAO.findAll().forEach(list::add);\n", descriptor.name.data());
 		fprintf(file, "\t\treturn list;\n");
 		fprintf(file, "\t}\n\n");
+		fprintf(file, "\t@Override\n");
 		fprintf(file, "\tpublic C%s Save(C%s object) {\n", descriptor.name.data(), descriptor.name.data());
 		fprintf(file, "\t\treturn m_%sDAO.save(object);\n", descriptor.name.data());
 		fprintf(file, "\t}\n\n");
+		fprintf(file, "\t@Override\n");
 		fprintf(file, "\tpublic C%s FindByID(Long id) {\n", descriptor.name.data());
 		fprintf(file, "\t\treturn m_%sDAO.findById(id).orElse(null);\n", descriptor.name.data());
 		fprintf(file, "\t}\n\n");
+		fprintf(file, "\t@Override\n");
 		fprintf(file, "\tpublic void Delete(C%s object) {\n", descriptor.name.data());
 		fprintf(file, "\t\tm_%sDAO.delete(object);\n", descriptor.name.data());
 		fprintf(file, "\t}\n\n");
